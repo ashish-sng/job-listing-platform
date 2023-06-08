@@ -1,0 +1,47 @@
+.header {
+  height: 15vh;
+  background-image: url("../../assets/headerImages/header1.png");
+  display: flex;
+  justify-content: space-around;
+  gap: 55vw;
+  align-items: center;
+  border-radius: 0 0 8vh 8vh;
+}
+
+.job__title{
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+  font-family: 'Lucida Sans';
+}
+
+.signup__buttons{
+  display: flex;
+  justify-content: space-around;
+  gap: 2vw;
+  align-items: center;
+}
+
+.header__login{
+  height: 6vh;
+  width: 9vw;
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 1vh;
+  padding: 1vh 2vw;
+  color: white;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.header__register{
+  height: 6vh;
+  width: 9vw;
+  background-color: white;
+  color: #ED5353;
+  border: 1px solid white;
+  border-radius: 1vh;
+  padding: 1vh 2vw;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
