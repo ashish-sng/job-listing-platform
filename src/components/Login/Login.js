@@ -1,14 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import userPageImage from "../../assets/userpageImages/userpage.png";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
 
   const signupRedirect = () => {
     navigate("/register");
+  };
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const login = () => {
+    axios
+      .post("http://localhost:4000/login", {
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log("Login successful", response.data, response.status);
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("token", response.data.token);
+        // Handle any success response if needed
+      })
+      .catch((error) => {
+        console.error("Login failed", error); // Handle any error response if needed
+      });
   };
 
   return (
@@ -19,11 +48,23 @@ const Login = () => {
           <span>Your personal job finder is here</span>
         </div>
         <div className="login__form">
-          <input type="email" placeholder="Email" />
-          <input type="passowrd" placeholder="Password" />
+          <input
+            value={email}
+            onChange={handleEmail}
+            type="email"
+            placeholder="Email"
+          />
+          <input
+            value={password}
+            onChange={handlePassword}
+            type="passowrd"
+            placeholder="Password"
+          />
         </div>
         <div className="login__footer">
-          <button id="login__signin">Sign In</button>
+          <button id="login__signin" onClick={login}>
+            Sign In
+          </button>
           <div className="login__footer__text">
             <span>Don't have an account? </span>
             <u onClick={signupRedirect}>Sign Up</u>
