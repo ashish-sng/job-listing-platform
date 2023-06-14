@@ -11,6 +11,7 @@ import userPageImage from "../../assets/userpageImages/userpage.png";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,6 +28,7 @@ const Login = () => {
   };
 
   const login = () => {
+    setLoading(true);
     axios
       .post(`${BASEURL}/login`, {
         email,
@@ -47,6 +49,9 @@ const Login = () => {
           draggable: true,
         });
         console.error("Login failed", error); // Handle any error response if needed
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -67,13 +72,13 @@ const Login = () => {
           <input
             value={password}
             onChange={handlePassword}
-            type="passowrd"
+            type="password"
             placeholder="Password"
           />
         </div>
         <div className="login__footer">
-          <button id="login__signin" onClick={login}>
-            Sign In
+          <button id="login__signin" onClick={login} disabled={loading}>
+            {loading ? "Loading..." : "Sign In"}
           </button>
           <div className="login__footer__text">
             <span>Don't have an account? </span>

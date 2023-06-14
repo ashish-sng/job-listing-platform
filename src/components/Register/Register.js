@@ -16,6 +16,7 @@ const Register = () => {
   const [emailError, setEmailError] = useState("");
   const [mobileError, setMobileError] = useState("");
   const [formError, setFormError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { setLoggedIn } = useJobContext();
 
@@ -69,6 +70,7 @@ const Register = () => {
 
     // Perform registration logic here if there are no validation errors
     if (!emailError && !mobileError) {
+      setLoading(true);
       axios
         .post(`${BASEURL}/register`, {
           name: name,
@@ -134,6 +136,9 @@ const Register = () => {
           }, 2000); // Redirect to register page after 2 seconds
           setFormError(err.response.data.message);
           console.log("here3");
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } else {
       setFormError("Please fill in all the fields");
@@ -206,8 +211,9 @@ const Register = () => {
             id="register__create__account"
             type="submit"
             onClick={handleSubmit}
+            disabled={loading}
           >
-            Create Account
+            {loading ? "Loading..." : "Create Account"}
           </button>
           <div className="register__footer__text">
             <span>Already have an account? </span>

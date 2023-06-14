@@ -38,7 +38,7 @@
 
 .register__form > div > p {
   margin: 0;
-  font-size: 5px;
+  font-size: 1.2rem;
   text-align: left;
   color: red;
 }
@@ -66,4 +66,8 @@
 .register__page__right > img {
   height: 100vh;
   width: 45vw;
+}
+
+.error-message{
+  font-size: 2rem;
 }

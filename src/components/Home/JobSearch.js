@@ -34,6 +34,11 @@ const JobSearch = () => {
     getJobListings(searchTerm, updatedSkills);
   };
 
+  const clearSkills = () => {
+    setSelectedSkills([]);
+    getJobListings(searchTerm, []);
+  };
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     // Perform search operation with the search term and selected skills
@@ -60,7 +65,7 @@ const JobSearch = () => {
         .catch((error) => {
           console.error("Error fetching data: ", error);
         });
-    }, 200),
+    }, 100),
     []
   );
 
@@ -99,10 +104,7 @@ const JobSearch = () => {
             ))}
           </div>
           {selectedSkills.length > 0 && (
-            <button
-              className="clear__skills"
-              onClick={() => setSelectedSkills([])}
-            >
+            <button className="clear__skills" onClick={clearSkills}>
               Clear
             </button>
           )}

@@ -5,7 +5,7 @@ import flag from "../../assets/icons/indianFlag.png";
 import useJobContext from "../../hooks/useJobContext";
 import { useNavigate } from "react-router-dom";
 const JobBox = ({ job }) => {
-  const { loggedIn, setShowDetails, setJobId } = useJobContext();
+  const { loggedIn, setJobId } = useJobContext();
   const navigate = useNavigate();
 
   const getJobDetails = () => {
@@ -14,7 +14,6 @@ const JobBox = ({ job }) => {
 
   const handleViewDetails = (e) => {
     setJobId(job._id);
-    setShowDetails(true);
     navigate(`/${job._id}`);
   };
 
