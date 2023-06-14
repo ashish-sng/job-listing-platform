@@ -11,15 +11,15 @@
   border-radius: 0 0 8vh 8vh;
 }
 
-.job__title{
+.job__title {
   color: white;
   font-weight: 700;
   font-size: 2rem;
-  font-family: 'Lucida Sans';
+  font-family: "Lucida Sans";
   margin-left: 2vw;
 }
 
-.user__icon{
+.user__icon {
   height: 10vh;
   width: 28vw;
   margin-right: 2vw;
@@ -38,7 +38,7 @@
   cursor: pointer;
 }
 
-.user__icon > img{
+.user__icon > img {
   height: 4rem;
   width: 4rem;
   border-radius: 50%;
@@ -47,18 +47,19 @@
 .user__icon > span {
   font-weight: 600;
   font-size: 1.6rem;
-  font-family: 'Lucida Sans';
+  font-family: "Lucida Sans";
   color: white;
 }
 
-.signup__buttons{
+.signup__buttons {
   display: flex;
   justify-content: space-around;
   gap: 2vw;
   align-items: center;
+  margin-right: 2vw;
 }
 
-.header__login{
+.header__login {
   height: 6vh;
   width: 9vw;
   background: transparent;
@@ -68,16 +69,24 @@
   color: white;
   font-weight: 600;
   font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
-.header__register{
+.header__register {
   height: 6vh;
   width: 9vw;
   background-color: white;
-  color: #ED5353;
+  color: #ed5353;
   border: 1px solid white;
   border-radius: 1vh;
   padding: 1vh 2vw;
   font-weight: 600;
   font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }

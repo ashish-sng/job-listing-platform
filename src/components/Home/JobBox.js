@@ -15,11 +15,8 @@ const JobBox = ({ job }) => {
   const handleViewDetails = (e) => {
     setJobId(job._id);
     setShowDetails(true);
-    console.log(job._id);
     navigate(`/${job._id}`);
   };
-
-  console.log(job)
 
   return (
     <div className="jobBox__container">

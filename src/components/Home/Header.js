@@ -26,11 +26,12 @@ const Header = () => {
       <div className="job__title">JobFinder</div>
       {loggedIn ? (
         <div className="user__icon">
-          <button onClick={logout}>
-            Logout
-          </button>
+          <button onClick={logout}>Logout</button>
           <span>Hello Recruiter!</span>
-          <img src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250" alt=""/>
+          <img
+            src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250"
+            alt=""
+          />
         </div>
       ) : (
         <div className="signup__buttons">

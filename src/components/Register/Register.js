@@ -6,6 +6,7 @@ import userPageImage from "../../assets/userpageImages/userpage.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useJobContext from "../../hooks/useJobContext";
+import BASEURL from "../../constants/baseurl";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -69,13 +70,27 @@ const Register = () => {
     // Perform registration logic here if there are no validation errors
     if (!emailError && !mobileError) {
       axios
-        .post("http://localhost:4000/register", {
+        .post(`${BASEURL}/register`, {
           name: name,
           email: email,
           mobile: mobile,
           password: password,
         })
         .then((res) => {
+          console.log("here");
+          if (res.status === 409) {
+            toast.error("User already exists. Please Login!", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+            });
+            setTimeout(() => {
+              navigate("/register");
+            }, 2000); // Redirect to register page after 2 seconds
+            return;
+          }
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("name", res.data.name);
           toast.success("Registration Successful", {
@@ -89,8 +104,24 @@ const Register = () => {
           setTimeout(() => {
             navigate("/");
           }, 2000);
+          console.log("here1");
         })
         .catch((err) => {
+          console.log("here2");
+          console.log(err);
+          if (err.response.status === 409) {
+            toast.error("User already exists. Please Login!", {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+            });
+            setTimeout(() => {
+              navigate("/register");
+            }, 2000); // Redirect to register page after 2 seconds
+            return;
+          }
           toast.error(err.response.data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -102,9 +133,21 @@ const Register = () => {
             navigate("/register");
           }, 2000); // Redirect to register page after 2 seconds
           setFormError(err.response.data.message);
+          console.log("here3");
         });
     } else {
       setFormError("Please fill in all the fields");
+      toast.error("Please fill in all the fields", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+      });
+
+      setTimeout(() => {
+        navigate("/register");
+      }, 2000); // Redirect to register page after 2 seconds
     }
   };
 

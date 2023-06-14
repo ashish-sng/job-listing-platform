@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import BASEURL from "../../constants/baseurl";
 
 const EditJob = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const EditJob = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/jobs/${id}`)
+      .get(`${BASEURL}/jobs/${id}`)
       .then((response) => {
         console.log("response", response.data.jobListing);
         setCompanyName(response.data.jobListing.companyName);
@@ -37,10 +38,9 @@ const EditJob = () => {
         setSkillsRequired(response.data.jobListing.skillsRequired);
       })
       .catch((error) => {
-        console.error("Job posting failed", error);
         navigate("/login");
       });
-  }, [id,navigate]);
+  }, [id, navigate]);
 
   const handleJobTypeChange = (e) => {
     setJobType(e.target.value);
@@ -51,13 +51,12 @@ const EditJob = () => {
   };
 
   const handleSkillsChange = (e) => {
-    const skills = e.target.value.split(",").map((skill) => skill.trim());
+    const skills = e.target.value.split(",").map((skill) => skill);
     setSkillsRequired(skills);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(localStorage.getItem("token"));
     // Prepare the data to be sent in the POST request
     const postData = {
       companyName,
@@ -69,12 +68,12 @@ const EditJob = () => {
       jobLocation,
       jobDescription,
       aboutCompany,
-      skillsRequired,
+      skillsRequired: skillsRequired.map((skill) => skill.trim()),
     };
 
     // Send the POST request
     axios
-      .put(`http://localhost:4000/job-posting/${id}`, postData, {
+      .put(`${BASEURL}/job-posting/${id}`, postData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

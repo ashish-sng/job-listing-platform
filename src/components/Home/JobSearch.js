@@ -3,24 +3,16 @@ import "./JobSearch.css";
 import searchIcon from "../../assets/icons/searchIcon.png";
 import useJobContext from "../../hooks/useJobContext";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import debounce from "lodash.debounce";
 import skills from "../../constants/skillOptions";
+import BASEURL from "../../constants/baseurl";
 
 const JobSearch = () => {
-  // const [options, setOptions] = useState([
-  //   "JS",
-  //   "HTML",
-  //   "CSS",
-  //   "ReactJS",
-  //   "NodeJS",
-  //   "Python",
-  // ]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const { loggedIn, setJobListings } = useJobContext();
   const navigate = useNavigate();
-  // const [selectedSkill, setSelectedSkill] = useState("");
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -53,21 +45,24 @@ const JobSearch = () => {
     navigate("/addJob");
   };
 
-  const getJobListings = useCallback(debounce((_searchTerm, _selectedSkills) => {
-    axios
-      .get(`http://localhost:4000/jobs`, {
-        params: {
-          searchTerm: _searchTerm,
-          skills: _selectedSkills.join(","),
-        }
-      })
-      .then((response) => {
-        setJobListings(response.data.jobListings);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  }, 200),[]);
+  const getJobListings = useCallback(
+    debounce((_searchTerm, _selectedSkills) => {
+      axios
+        .get(`${BASEURL}/jobs`, {
+          params: {
+            searchTerm: _searchTerm,
+            skills: _selectedSkills.join(","),
+          },
+        })
+        .then((response) => {
+          setJobListings(response.data.jobListings);
+        })
+        .catch((error) => {
+          console.error("Error fetching data: ", error);
+        });
+    }, 200),
+    []
+  );
 
   return (
     <div className="job-search">
@@ -94,15 +89,23 @@ const JobSearch = () => {
             {selectedSkills.map((skill) => (
               <div className="selected-skill" key={skill}>
                 {skill}
-                <span
+                <button
                   className="remove-skill"
                   onClick={() => handleRemoveSkill(skill)}
                 >
-                  &times;
-                </span>
+                  X
+                </button>
               </div>
             ))}
           </div>
+          {selectedSkills.length > 0 && (
+            <button
+              className="clear__skills"
+              onClick={() => setSelectedSkills([])}
+            >
+              Clear
+            </button>
+          )}
         </div>
 
         {loggedIn && (

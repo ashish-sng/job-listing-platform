@@ -2,9 +2,9 @@ import { createContext, useState } from "react";
 
 const JobContext = createContext({
   loggedIn: false,
-  setLoggedIn: () => { },
+  setLoggedIn: () => {},
   showDetails: false,
-  setShowDetails: () => { },
+  setShowDetails: () => {},
 });
 
 const Provider = ({ children }) => {

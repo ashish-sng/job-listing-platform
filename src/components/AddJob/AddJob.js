@@ -3,6 +3,8 @@ import "./AddJob.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import BASEURL from "../../constants/baseurl";
+import useJobContext from "../../hooks/useJobContext";
 
 const AddJob = () => {
   const [companyName, setCompanyName] = useState("");
@@ -15,6 +17,8 @@ const AddJob = () => {
   const [jobDescription, setJobDescription] = useState("");
   const [aboutCompany, setAboutCompany] = useState("");
   const [skillsRequired, setSkillsRequired] = useState([]);
+
+  const { loggedIn } = useJobContext();
 
   const navigate = useNavigate();
 
@@ -32,12 +36,13 @@ const AddJob = () => {
       jobLocation,
       jobDescription,
       aboutCompany,
-      skillsRequired,
+      skillsRequired: skillsRequired.map((skill) => skill.trim()),
     };
+    console.log("postData", postData);
 
     // Send the POST request
     axios
-      .post("http://localhost:4000/job-posting", postData, {
+      .post(`${BASEURL}/job-posting`, postData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -59,11 +64,34 @@ const AddJob = () => {
           position: "top-center",
           autoClose: 2000,
         });
+
         setTimeout(() => {
           navigate("/");
         }, 2000);
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          toast.error("Unauthorized Access. Redirecting to home page", {
+            position: "top-center",
+            autoClose: 2000,
+          });
+          localStorage.clear();
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+          return;
+        } else if (error.response.status === 400) {
+          toast.error("Please provide all the fields!", {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        } else {
+          toast.error("Job posting failed!", {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+
         console.error("Job posting failed", error);
         // Handle any error response if needed
       });
@@ -79,7 +107,7 @@ const AddJob = () => {
   };
 
   const handleSkillsChange = (e) => {
-    const skills = e.target.value.split(",").map((skill) => skill.trim());
+    const skills = e.target.value.split(",").map((skill) => skill);
     setSkillsRequired(skills);
   };
 

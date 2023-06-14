@@ -8,6 +8,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import AddJob from "./components/AddJob/AddJob";
 import EditJob from "./components/EditJob/EditJob";
+import Error404 from "./components/NotFound/Error404";
 import { Provider } from "./context/JobContext";
 
 function App() {
@@ -38,6 +39,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/addJob" element={<AddJob />} />
             <Route path="/editJob/:id" element={<EditJob />} />
+            <Route path="/404" element={<Error404 />} />
+            <Route path="*" element={<Error404 />} />
           </Routes>
         </BrowserRouter>
       </div>
