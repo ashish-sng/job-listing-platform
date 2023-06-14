@@ -26,3 +26,33 @@
     width: 45vw;
     color: white;
 }
+
+.job__buttons {
+     display: flex;
+     justify-content: center;
+     width: 30vw;
+     margin-left: 20vw;
+}
+
+.cancel__addJob{
+    height: 5.5vh;
+    width: 12vw;
+    background-color: #C2C2C2;
+    border-radius: 1vh;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    margin: 1vh 0 0 0;
+}
+
+.add__job__button{
+    height: 5.5vh;
+    width: 12vw;
+    background-color: #ED5353;
+    border-radius: 1vh;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    margin: 1vh 0 0 1vh;
+    cursor: pointer;
+}

@@ -1,34 +1,45 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import "./JobSearch.css";
 import searchIcon from "../../assets/icons/searchIcon.png";
+import useJobContext from "../../hooks/useJobContext";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import debounce from "lodash.debounce";
+import skills from "../../constants/skillOptions";
 
 const JobSearch = () => {
-  const [options, setOptions] = useState([
-    "JS",
-    "HTML",
-    "CSS",
-    "ReactJS",
-    "NodeJS",
-    "Python",
-  ]);
+  // const [options, setOptions] = useState([
+  //   "JS",
+  //   "HTML",
+  //   "CSS",
+  //   "ReactJS",
+  //   "NodeJS",
+  //   "Python",
+  // ]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const { loggedIn, setJobListings } = useJobContext();
+  const navigate = useNavigate();
   // const [selectedSkill, setSelectedSkill] = useState("");
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    getJobListings(searchTerm, selectedSkills);
   };
 
   const handleSelectChange = (e) => {
     const skill = e.target.value;
     if (skill && !selectedSkills.includes(skill)) {
-      setSelectedSkills([...selectedSkills, skill]);
+      const updatedSkills = [...selectedSkills, skill];
+      setSelectedSkills(updatedSkills);
+      getJobListings(searchTerm, updatedSkills);
     }
   };
 
   const handleRemoveSkill = (skill) => {
     const updatedSkills = selectedSkills.filter((s) => s !== skill);
     setSelectedSkills(updatedSkills);
+    getJobListings(searchTerm, updatedSkills);
   };
 
   const handleSearchSubmit = (e) => {
@@ -37,6 +48,26 @@ const JobSearch = () => {
     console.log("Search Term:", searchTerm);
     console.log("Selected Skills:", selectedSkills);
   };
+
+  const addJobButton = () => {
+    navigate("/addJob");
+  };
+
+  const getJobListings = useCallback(debounce((_searchTerm, _selectedSkills) => {
+    axios
+      .get(`http://localhost:4000/jobs`, {
+        params: {
+          searchTerm: _searchTerm,
+          skills: _selectedSkills.join(","),
+        }
+      })
+      .then((response) => {
+        setJobListings(response.data.jobListings);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  }, 200),[]);
 
   return (
     <div className="job-search">
@@ -55,24 +86,30 @@ const JobSearch = () => {
         <div className="select-skills">
           <select value={selectedSkills} onChange={handleSelectChange}>
             <option value="">Select Skill</option>
-            {options.map((option, index) => {
-              return <option key={index}>{option}</option>;
+            {skills.map((skill, index) => {
+              return <option key={index}>{skill}</option>;
             })}
           </select>
+          <div className="selected-skills">
+            {selectedSkills.map((skill) => (
+              <div className="selected-skill" key={skill}>
+                {skill}
+                <span
+                  className="remove-skill"
+                  onClick={() => handleRemoveSkill(skill)}
+                >
+                  &times;
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="selected-skills">
-          {selectedSkills.map((skill) => (
-            <div className="selected-skill" key={skill}>
-              {skill}
-              <span
-                className="remove-skill"
-                onClick={() => handleRemoveSkill(skill)}
-              >
-                &times;
-              </span>
-            </div>
-          ))}
-        </div>
+
+        {loggedIn && (
+          <button className="add__job__btn" onClick={addJobButton}>
+            + Add Job
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,22 +1,36 @@
-import React, { useState } from "react";
-import Header from "./Header";
+import React, { useEffect } from "react";
+import "./Home.css";
 import JobSearch from "./JobSearch";
 import JobContainer from "./JobContainer";
-import JobDetails from "./JobDetails";
+import useJobContext from "../../hooks/useJobContext";
+import axios from "axios";
 
 const Home = () => {
-  const [showDetails, setShowDetails] = useState(true);
+  const { loggedIn, setLoggedIn, setJobListings } = useJobContext();
+  useEffect(() => {
+    localStorage.getItem("token") ? setLoggedIn(true) : setLoggedIn(false);
+    console.log(loggedIn);
+  }, [loggedIn, setLoggedIn]);
+
+  const getJobListings = () => {
+    axios
+      .get("http://localhost:4000/jobs")
+      .then((response) => {
+        setJobListings(response.data.jobListings);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  };
+
+  useEffect(() => {
+    getJobListings();
+  }, []);
+
   return (
     <div className="home">
-      <Header />
-      {showDetails ? (
-        <JobDetails />
-      ) : (
-        <>
-          <JobSearch />
-          <JobContainer />
-        </>
-      )}
+      <JobSearch />
+      <JobContainer />
     </div>
   );
 };

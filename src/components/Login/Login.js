@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import userPageImage from "../../assets/userpageImages/userpage.png";
 
@@ -30,12 +32,19 @@ const Login = () => {
         password,
       })
       .then((response) => {
-        console.log("Login successful", response.data, response.status);
         localStorage.setItem("name", response.data.name);
         localStorage.setItem("token", response.data.token);
         // Handle any success response if needed
+        navigate("/");
       })
       .catch((error) => {
+        toast.error("Incorrect Email or Password. Try again.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          });
         console.error("Login failed", error); // Handle any error response if needed
       });
   };
@@ -74,6 +83,7 @@ const Login = () => {
       <div className="login__page__right">
         <img src={`${userPageImage}`} alt="" />
       </div>
+      <ToastContainer />
     </div>
   );
 };

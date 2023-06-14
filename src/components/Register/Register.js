@@ -3,6 +3,9 @@ import "./Register.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import userPageImage from "../../assets/userpageImages/userpage.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useJobContext from "../../hooks/useJobContext";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -12,6 +15,8 @@ const Register = () => {
   const [emailError, setEmailError] = useState("");
   const [mobileError, setMobileError] = useState("");
   const [formError, setFormError] = useState("");
+
+  const { setLoggedIn } = useJobContext();
 
   const navigate = useNavigate();
 
@@ -71,11 +76,33 @@ const Register = () => {
           password: password,
         })
         .then((res) => {
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("name", res.data.name);
-        }).catch((err) => {
-            setFormError(err.response.data.message);
-        }); 
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("name", res.data.name);
+          toast.success("Registration Successful", {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+          });
+          setLoggedIn(true);
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+          });
+          setTimeout(() => {
+            navigate("/register");
+          }, 2000); // Redirect to register page after 2 seconds
+          setFormError(err.response.data.message);
+        });
     } else {
       setFormError("Please fill in all the fields");
     }
@@ -148,6 +175,7 @@ const Register = () => {
       <div className="register__page__right">
         <img src={`${userPageImage}`} alt="" />
       </div>
+      <ToastContainer />
     </div>
   );
 };
