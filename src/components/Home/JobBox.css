@@ -15,7 +15,6 @@
   height: 100%;
   width: 36vw;
   display: flex;
-  /* justify-content: space-evenly; */
   gap: 1vw;
   align-items: center;
 }
@@ -23,26 +22,28 @@
 .company__logo > img {
   height: 6vh;
   width: auto;
-  margin-bottom: 10vh;
+  margin-bottom: 8vh;
 }
 
 .second__div {
+  font-size: 2.5vh;
   height: 100%;
   width: 15vw;
-  margin-top: 2vh;
+  margin-top: 3vh;
   display: flex;
   flex-direction: column;
-  gap: 1vw;
+  gap: 2vh;
   align-items: center;
   color: #9c9c9c;
   font-weight: 600;
 }
 
 .second__div__text > span:first-of-type {
-  margin-right: 2vh;
+  margin-right: 1vw;
 }
 
 .second__div__footer {
+  width: auto;
   font-weight: 500;
   color: rgba(224, 13, 55);
 }
@@ -95,7 +96,7 @@
   margin: 0.5vh 0.5vw;
   background-color: #ffeeee;
   font-weight: 600;
-  font-size: 10px;
+  font-size: 0.7rem;
   border-radius: 5px;
 }
 
