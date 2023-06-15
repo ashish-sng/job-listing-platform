@@ -9,6 +9,7 @@ import Register from "./components/Register/Register";
 import AddJob from "./components/AddJob/AddJob";
 import EditJob from "./components/EditJob/EditJob";
 import Error404 from "./components/NotFound/Error404";
+import Health from "./components/Health/Health";
 import { Provider } from "./context/JobContext";
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                 </>
               }
             />
+            <Route path="/health" element={<Health />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/addJob" element={<AddJob />} />
